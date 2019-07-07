@@ -1,10 +1,9 @@
 import wikipedia
 
-print("The information available from a page\n")
+print("Show the contents of a page")
 
-P = wikipedia.page("Polynomial")
-
-for i in dir(P):
-    print(i)
+name = "List_of_tallest_buildings_and_structures"
+P = wikipedia.page(name)
+C =  P.content  
     
-#print(P.summary)
+print(C)
