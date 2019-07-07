@@ -1,7 +1,9 @@
+# https://roche.io/2016/05/scrape-wikipedia-with-python
+
 import requests
 from bs4 import BeautifulSoup
 
-WIKI_URL = "https://en.wikipedia.org/wiki/List_of_volcanoes_by_elevation"
+WIKI_URL = "https://en.wikipedia.org/wiki/List_of_tallest_buildings_and_structures"
 
 req = requests.get(WIKI_URL)
 soup = BeautifulSoup(req.content, 'lxml')
