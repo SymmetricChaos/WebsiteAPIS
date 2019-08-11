@@ -1,31 +1,36 @@
 from ScryfallRequest import SFrequest
+import pandas as pd
 from time import sleep
+import json
 
-def extract_info(a):
+def extract_card_data(a):
     out = dict()
-    keys = ['set','set_type','cmc','object','type_line']
+    keys = ['released_at','set_name','set_type','mana_cost','cmc','object','type_line','id','layout','rarity']
     for i in a['data']:
-        out[i['name']] = [i[k] for k in keys]
+        if i['lang'] == 'en':
+            out[i['name']+"_"+i['set']] = [i[k] for k in keys]
     return out
 
-sparse_data = dict()
-for page in range(1,50):
-    J = SFrequest(f"cards?page={page}")
-    dat = extract_info(J)
-    sparse_data.update(dat)
-    # Pause for a moment to not overload the site
-    sleep(.1)
+def extract_simple_card_data(a):
+    out = dict()
+    keys = ['released_at','set_name','set_type','mana_cost','cmc','object','type_line','id','rarity']
+    for i in a['data']:
+        if i['lang'] == 'en' and i['layout'] == 'normal':
+            out[i['name']+"_"+i['set']] = [i[k] for k in keys]
+    return out
 
-for i in sparse_data.items():
-    print(i)
+def pages_to_file(n):
 
-
-
-#just_cmc = []
-#for i in sparse_data.values():
-#    if "Token" not in i[3] and "Land" not in i[3]:
-#        just_cmc.append(int(i[1]))
-#print(just_cmc)
+    sparse_data = dict()
+    for page in range(1,n):
+        J = SFrequest(f"cards?page={page}")
+        dat = extract_simple_card_data(J)
+        sparse_data.update(dat)
+        # Pause for a moment to not overload the site
+        sleep(.1)
     
-#with open('OWLmatches.json', 'w') as outfile:
-#    json.dump(J, outfile)
+    with open('mtg_card_data.json', 'w') as outfile:
+        json.dump(sparse_data, outfile)
+    
+    
+pages_to_file(500)
