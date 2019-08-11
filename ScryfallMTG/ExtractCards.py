@@ -1,19 +1,10 @@
 from ScryfallRequest import SFrequest
-import pandas as pd
 from time import sleep
 import json
 
-def extract_card_data(a):
-    out = dict()
-    keys = ['released_at','set_name','set_type','mana_cost','cmc','object','type_line','id','layout','rarity']
-    for i in a['data']:
-        if i['lang'] == 'en':
-            out[i['name']+"_"+i['set']] = [i[k] for k in keys]
-    return out
-
 def extract_simple_card_data(a):
     out = dict()
-    keys = ['released_at','set_name','set_type','mana_cost','cmc','object','type_line','id','rarity']
+    keys = ['name','released_at','set_name','set_type','mana_cost','cmc','object','type_line','id','rarity']
     for i in a['data']:
         if i['lang'] == 'en' and i['layout'] == 'normal':
             out[i['name']+"_"+i['set']] = [i[k] for k in keys]
