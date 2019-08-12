@@ -1,4 +1,4 @@
-#https://api.scryfall.com
+#https://scryfall.com/docs/api
 
 import requests
 import json
